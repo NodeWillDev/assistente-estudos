@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Assistente de Estudos</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<main>
+    <h1>Assistente de Estudos</h1>
+    <p>Estude com a ajuda da inteligência artificial.</p>
+    <section>
+        <h2>Nova consulta</h2>
+        <form th:action="@{/gerar}" method="post">
+            <label for="tipo">O que deseja fazer?</label>
+            <select id="tipo" name="tipo">
+                <option>Explicação</option>
+                <option>Resumo</option>
+                <option>Exercícios</option>
+            </select>
+            <label for="assunto">Assunto</label>
+            <textarea id="assunto" name="assunto" placeholder="Ex.: O que é programação orientada a objetos?" required maxlength="4000"></textarea>
+            <button type="submit">Gerar com IA</button>
+        </form>
+        <p class="erro" th:if="${erro}" th:text="${erro}"></p>
+    </section>
+    <h2>Histórico de consultas</h2>
+    <p th:if="${consultas.isEmpty()}">Nenhuma consulta cadastrada.</p>
+    <section th:each="consulta : ${consultas}">
+        <small th:text="${consulta.tipo}"></small>
+        <h3 th:text="${consulta.assunto}"></h3>
+        <p class="resposta" th:text="${consulta.resposta}"></p>
+        <form th:action="@{/excluir/{id}(id=${consulta.id})}" method="post">
+            <button class="excluir" type="submit">Excluir</button>
+        </form>
+    </section>
+</main>
+</body>
+</html>
